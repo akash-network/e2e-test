@@ -11,4 +11,4 @@ RUN \
     bash \
  && rm -rf /var/lib/apt/lists/*
 
-ENTRYPOINT ["/tini", "--", "e2e-test"]
+ENTRYPOINT ["/usr/bin/tini", "--", "e2e-test"]
