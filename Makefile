@@ -1,6 +1,6 @@
 GORELEASER_RELEASE       ?= false
 GORELEASER_DEBUG         ?= false
-GORELEASER_IMAGE         := ghcr.io/goreleaser/goreleaser:$(GOTOOLCHAIN_SEMVER)
+GORELEASER_IMAGE         := ghcr.io/goreleaser/goreleaser
 GORELEASER_MOUNT_CONFIG  ?= false
 GORELEASER_SNAPSHOT      ?= false
 GORELEASER_SKIP_FLAGS    := $(GORELEASER_SKIP)
