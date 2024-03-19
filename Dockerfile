@@ -9,6 +9,7 @@ RUN \
     ca-certificates \
     curl \
     bash \
+    jq \
  && rm -rf /var/lib/apt/lists/*
 
 ENTRYPOINT ["/usr/bin/tini", "--", "e2e-test"]
