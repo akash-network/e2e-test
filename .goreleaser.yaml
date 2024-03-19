@@ -1,0 +1,65 @@
+---
+project_name: e2e-test
+env:
+  - GO111MODULE=on
+builds:
+  - id: e2e-test-linux
+    binary: e2e-test
+    main: ./
+    goarch:
+      - amd64
+      - arm64
+    goos:
+      - linux
+    flags:
+      - -trimpath
+archives:
+  - format: binary
+dockers:
+  - dockerfile: Dockerfile
+    use: buildx
+    goos: linux
+    goarch: amd64
+    build_flag_templates:
+      - --platform=linux/amd64
+      - --label=org.opencontainers.image.title={{ .ProjectName }}
+      - --label=org.opencontainers.image.description={{ .ProjectName }}
+      - --label=org.opencontainers.image.url={{.GitURL}}
+      - --label=org.opencontainers.image.source={{.GitURL}}
+      - --label=org.opencontainers.image.version={{ .Version }}
+      - --label=org.opencontainers.image.created={{ time "2006-01-02T15:04:05Z07:00" }}
+      - --label=org.opencontainers.image.revision={{ .FullCommit }}
+    image_templates:
+      - "{{ .Env.DOCKER_IMAGE }}:{{ .ShortCommit }}-amd64"
+      - "{{ .Env.DOCKER_IMAGE }}:{{ .Version }}-amd64"
+      - "{{ .Env.DOCKER_IMAGE }}:latest-amd64"
+  - dockerfile: Dockerfile
+    use: buildx
+    goos: linux
+    goarch: arm64
+    build_flag_templates:
+      - --platform=linux/arm64
+      - --label=org.opencontainers.image.title={{ .ProjectName }}
+      - --label=org.opencontainers.image.description={{ .ProjectName }}
+      - --label=org.opencontainers.image.url={{.GitURL}}
+      - --label=org.opencontainers.image.source={{.GitURL}}
+      - --label=org.opencontainers.image.version={{ .Version }}
+      - --label=org.opencontainers.image.created={{ time "2006-01-02T15:04:05Z07:00" }}
+      - --label=org.opencontainers.image.revision={{ .FullCommit }}
+    image_templates:
+      - "{{ .Env.DOCKER_IMAGE }}:{{ .ShortCommit }}-arm64"
+      - "{{ .Env.DOCKER_IMAGE }}:{{ .Version }}-arm64"
+      - "{{ .Env.DOCKER_IMAGE }}:latest-arm64"
+docker_manifests:
+  - name_template: "{{ .Env.DOCKER_IMAGE }}:{{ .ShortCommit }}"
+    image_templates:
+      - "{{ .Env.DOCKER_IMAGE }}:{{ .ShortCommit }}-amd64"
+      - "{{ .Env.DOCKER_IMAGE }}:{{ .ShortCommit }}-arm64"
+  - name_template: "{{ .Env.DOCKER_IMAGE }}:{{ .Version }}"
+    image_templates:
+      - "{{ .Env.DOCKER_IMAGE }}:{{ .Version }}-amd64"
+      - "{{ .Env.DOCKER_IMAGE }}:{{ .Version }}-arm64"
+  - name_template: "{{ .Env.DOCKER_IMAGE }}:latest"
+    image_templates:
+      - "{{ .Env.DOCKER_IMAGE }}:latest-amd64"
+      - "{{ .Env.DOCKER_IMAGE }}:latest-arm64"
